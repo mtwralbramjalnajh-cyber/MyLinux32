@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import sys, platform
+print("==========================================")
+print("  MyLinux32 Python Tool - Ready to Run!")
+print(f"  Python Version: {platform.python_version()}")
+print("==========================================")
