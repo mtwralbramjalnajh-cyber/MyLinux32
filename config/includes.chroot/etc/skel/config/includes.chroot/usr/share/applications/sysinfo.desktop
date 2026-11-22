@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=System Info
+Comment=Display MyLinux32 System Information
+Exec=lxterminal -e "bash -c 'sysinfo; echo; read -p \"Press Enter to exit...\"'"
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;
