@@ -1,0 +1,23 @@
+name: Build-32bit-OS
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Build Tools
+        run: sudo apt-get update && sudo apt-get install -y live-build
+      - name: Configure and Build 32-bit ISO
+        run: |
+          find config -type f -exec sed -i 's/\r$//' {} +
+          mkdir -p /tmp/custom_boot && cp -r config/bootloaders/isolinux/* /tmp/custom_boot/
+          lb config --architecture i386 --distribution bookworm --linux-flavours 686 --archive-areas "main contrib non-free-firmware" --iso-application "MyLinux32" --iso-volume "MyLinux32" --iso-publisher "Developer"
+          cp -r /usr/share/live/build/bootloaders/isolinux/* config/bootloaders/isolinux/
+          cp -r /tmp/custom_boot/* config/bootloaders/isolinux/
+          chmod +x config/hooks/live/*
+          sudo lb build
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyLinux32-ISO
+          path: "*.iso"
